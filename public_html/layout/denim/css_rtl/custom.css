@@ -1,0 +1,67 @@
+#admin-groupmembers-fieldFrom,
+#admin-groupmembers-fieldTo,
+#admin-groupmembers-fieldInherit {
+    width: 100%;
+    height: 100%;
+}
+
+/* For Admin Group Editor Rights List */
+.gl-flex-rights-list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+}
+.gl-flex-rights-list > li {
+  width: 300px;
+}
+
+/* For Image Form Thumbnail Frame */
+.gl-image-form-thumb-frame {
+  width: 64px;
+  height: 64px;
+  background-color: #ddd;
+}
+
+.gl-image-form-thumb-frame img {
+  width: 64px;
+  height: 64px;
+}
+
+/* Used by blockheader-child.thtml and based on block-center CSS class */
+#centerblocks section.block-child-center,
+#centerblocks div.block-child-center {
+  margin: 0 0 1.25em 0;
+}
+
+/* Used to better match other article related blocks */
+.block-trackback-content {
+    border-bottom: 0px;
+}
+
+/* Needed for Calendar Submit Event as address wraps and messes layout */
+.form-description {
+	white-space:nowrap;
+}
+
+/* Needed for Calendar Submit Event */
+.clear-right {
+	clear:right;	
+}
+.clear-left {
+	clear:left;	
+}
+.clear-both {
+	clear:both;	
+}
+
+/* Used by blocks that can also be called as autotags */
+.block-autotag {
+    padding: 5px;
+    width: 300px;
+}
+
+.likes-autotag {
+    padding: 5px;
+    margin: 0 auto;
+    width: 300px;
+}

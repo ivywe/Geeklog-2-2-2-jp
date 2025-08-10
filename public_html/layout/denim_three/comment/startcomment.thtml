@@ -1,0 +1,21 @@
+{# begin {templatelocation} #}
+
+<aside id="{area_id}">
+  {!if is_comment_only_page}
+  <h1>{comment_page_title}</h1>
+  {!else}
+  <h2>{comment_page_title_short}</h2>
+  {!endif}
+  
+  <div id="comments">
+    {commentbar}
+    {comments}
+
+    {!if pagenav}
+    <div class="uk-margin-top">{pagenav}</div>
+    {!endif}
+  </div>
+  {commenteditor}
+</aside>
+
+{# end {templatelocation} #}

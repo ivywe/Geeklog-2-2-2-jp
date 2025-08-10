@@ -1,0 +1,19 @@
+{# begin {templatelocation} #}
+
+{breadcrumbs}
+
+<!-- BEGIN breadcrumb -->
+<div class="bc_navigation">
+    {breadcrumb_items}
+</div>
+<!-- END breadcrumb -->
+
+<!-- BEGIN breadcrumb_item -->
+{separator}<a href="{url}">{name}</a>
+<!-- END breadcrumb_item -->
+
+<!-- BEGIN breadcrumb_item_nolink -->
+{separator}{name}
+<!-- END breadcrumb_item_nolink -->
+
+{# end {templatelocation} #}

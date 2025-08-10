@@ -1,0 +1,22 @@
+{# begin {templatelocation} #}
+
+{# variables - index_page (first page) are available as well to use #}
+
+{!if topic_id}
+    <h1>{topic_title} 
+	{!if edit_icon}
+    <span style="float:right;">
+	  {edit_icon}
+    </span>
+	{!endif}
+	</h1>
+{!else}
+    {# If topic id does not exist then on homepage #}
+
+{!endif}
+
+{topic_content}
+
+{page_navigation}
+
+{# end {templatelocation} #}
