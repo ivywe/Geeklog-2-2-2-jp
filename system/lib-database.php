@@ -287,6 +287,11 @@ function DB_delete($table, $id, $value, $return_page = '')
  */
 function DB_getItem($table, $what, $selection = '', $defaultValue = false)
 {
+    if (empty($table)) {
+        trigger_error('DB_getItem: Table name is empty', E_USER_ERROR);
+        return $defaultValue;
+    }
+
     if (!empty($selection)) {
         $result = DB_query("SELECT {$what} FROM {$table} WHERE {$selection}");
     } else {
