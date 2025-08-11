@@ -10,7 +10,7 @@ $_SQL[] = "INSERT INTO {$_TABLES['routes']} (method, rule, route, priority) VALU
 
 // Drop tables
 $_SQL[] = "DROP TABLE IF EXISTS {$_TABLES['cookiecodes']}";
-$_SQL[] = "DROP TABLE IF EXISTS {$_TABLES['dateformats']}";
+// $_SQL[] = "DROP TABLE IF EXISTS {$_TABLES['dateformats']}";
 $_SQL[] = "DROP TABLE IF EXISTS {$_TABLES['maillist']}";
 
 // Old VARS table variables for Database Backup that are not used anymore (but could still get created in some cases)
