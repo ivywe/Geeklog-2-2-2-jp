@@ -27,4 +27,4 @@ $_DB_dbms = 'mysql';
 // For multi-language sites you should choose 'utf8' as the database character set. For those who wish to use emojis then 'utf8mb4' should be the setting.
 // If $_DB_charset is empty, then the default charset for the database server is used by Geeklog (which could be incorrect for your database collation and data could get corrupted)
 // For more information on the different languages, character sets, and database collations for MySQL and PostgreSQL (including a table with what each should be based on your sites language), see the Geeklog install documentation.
-$_DB_charset = 'latin1';
+$_DB_charset = 'utf8mb4';
