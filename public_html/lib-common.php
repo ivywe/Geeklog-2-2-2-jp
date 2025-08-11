@@ -9692,6 +9692,14 @@ function COM_strftime($format, $timestamp = null)
         $_LOCALE->setLocale(empty($LANG_ISO639_1) ? \Geeklog\Locale::DEFAULT_LOCALE : $LANG_ISO639_1);
     }
 
+    if (empty($_LOCALE)) {
+        // $_LOCALEが初期化されていなければ、PHP標準のstrftimeを使うなどの代替処理
+        if ($timestamp === null) {
+            $timestamp = time();
+        }
+        return strftime($format, $timestamp);
+    }
+
     return $_LOCALE->strftime($format, $timestamp);
 }
 
