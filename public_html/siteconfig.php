@@ -105,23 +105,22 @@ if (!defined('VERSION')) {
 }
 
 // ============================================================
-// Custom IP Access Control Settings
+// Custom IP Access Control Settings (Optional)
 // These settings define which IP addresses are allowed
 // and which paths require IP-based access restrictions.
+// If not defined, default values in lib-common.php will be used.
 // ============================================================
 
-// List of allowed IP addresses or IPv4 CIDR ranges
+// Example: Uncomment and edit if needed
+/*
 $allowed = [
-  'xxx.xxx.xxx.xxx/xx',
-  'xxx.xxx.xxx.xxx/xx',
-  'xxx.xxx.xxx.xxx'
+    '203.0.113.5',
+    '198.51.100.0/24',
+    '127.0.0.1'
 ];
 
-// List of URL paths to restrict (partial match allowed)
-// Examples:
-//   '/admin/'   → Restrict all files under /admin/ directory
-//   '/users.php' → Restrict access to users.php file
 $restricted = [
-  '/admin/',
-  '/users.php'
+    '/admin/',
+    '/users.php'
 ];
+*/

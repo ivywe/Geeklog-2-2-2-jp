@@ -68,6 +68,16 @@ $_REQUEST = array_merge($_GET, $_POST);
 require __DIR__ . '/siteconfig.php';
 
 // ============================================================
+// Ensure default values if not defined in siteconfig.php
+// ============================================================
+if (!isset($allowed) || !is_array($allowed)) {
+    $allowed = []; // No allowed IP restriction by default
+}
+if (!isset($restricted) || !is_array($restricted)) {
+    $restricted = []; // No path restrictions by default
+}
+
+// ============================================================
 // Client IP detection
 // ============================================================
 $clientIp = $_SERVER['REMOTE_ADDR'] ?? '';
@@ -75,7 +85,6 @@ $path     = $_SERVER['SCRIPT_NAME'] ?? ''; // e.g. /admin/index.php
 
 // ============================================================
 // IPv4 CIDR check function
-// Checks if an IP address is within a given IPv4 range
 // ============================================================
 function ipv4_in_cidr(string $ip, string $cidr): bool {
     if (strpos($cidr, '/') === false) {
@@ -103,7 +112,7 @@ foreach ($restricted as $pattern) {
 // ============================================================
 // If the path is restricted, verify client IP is allowed
 // ============================================================
-if ($needCheck) {
+if ($needCheck && !empty($allowed)) {
     $allowedFlag = false;
     foreach ($allowed as $a) {
         if (ipv4_in_cidr($clientIp, $a)) {
