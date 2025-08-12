@@ -103,3 +103,25 @@ if (!defined('LB')) {
 if (!defined('VERSION')) {
   define('VERSION', '2.2.2');
 }
+
+// ============================================================
+// Custom IP Access Control Settings
+// These settings define which IP addresses are allowed
+// and which paths require IP-based access restrictions.
+// ============================================================
+
+// List of allowed IP addresses or IPv4 CIDR ranges
+$allowed = [
+  'xxx.xxx.xxx.xxx/xx',
+  'xxx.xxx.xxx.xxx/xx',
+  'xxx.xxx.xxx.xxx'
+];
+
+// List of URL paths to restrict (partial match allowed)
+// Examples:
+//   '/admin/'   → Restrict all files under /admin/ directory
+//   '/users.php' → Restrict access to users.php file
+$restricted = [
+  '/admin/',
+  '/users.php'
+];

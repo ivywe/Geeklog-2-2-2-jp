@@ -67,6 +67,58 @@ $_REQUEST = array_merge($_GET, $_POST);
  */
 require __DIR__ . '/siteconfig.php';
 
+// ============================================================
+// Client IP detection
+// ============================================================
+$clientIp = $_SERVER['REMOTE_ADDR'] ?? '';
+$path     = $_SERVER['SCRIPT_NAME'] ?? ''; // e.g. /admin/index.php
+
+// ============================================================
+// IPv4 CIDR check function
+// Checks if an IP address is within a given IPv4 range
+// ============================================================
+function ipv4_in_cidr(string $ip, string $cidr): bool {
+    if (strpos($cidr, '/') === false) {
+        return $ip === $cidr;
+    }
+    list($subnet, $mask) = explode('/', $cidr, 2);
+    $mask = (int)$mask;
+    $ipLong     = sprintf('%u', ip2long($ip));
+    $subnetLong = sprintf('%u', ip2long($subnet));
+    $maskLong   = -1 << (32 - $mask);
+    return (($ipLong & $maskLong) === ($subnetLong & $maskLong));
+}
+
+// ============================================================
+// Determine if the current request path is restricted
+// ============================================================
+$needCheck = false;
+foreach ($restricted as $pattern) {
+    if (strpos($path, $pattern) === 0 || strpos($path, $pattern) !== false) {
+        $needCheck = true;
+        break;
+    }
+}
+
+// ============================================================
+// If the path is restricted, verify client IP is allowed
+// ============================================================
+if ($needCheck) {
+    $allowedFlag = false;
+    foreach ($allowed as $a) {
+        if (ipv4_in_cidr($clientIp, $a)) {
+            $allowedFlag = true;
+            break;
+        }
+    }
+    if (!$allowedFlag) {
+        http_response_code(403);
+        header('Content-Type: text/plain; charset=utf-8');
+        echo "Access Denied: Your IP address is not allowed.";
+        exit;
+    }
+}
+
 if (COM_isDeveloperMode() &&
     isset($_CONF['developer_mode_php'], $_CONF['developer_mode_php']['error_reporting'])) {
     error_reporting((int) $_CONF['developer_mode_php']['error_reporting']);
