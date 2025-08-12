@@ -147,10 +147,20 @@ $LANG_STATIC = array(
     'likes_desc' => 'likesコントロールの表示方法を決めます。既定値はプラグインの既定値で決まります。センターブロックに表示するページではlikesコントロールを表示しません。テンプレートのページではこの設定を使用しません。'
 );
 
+// Search options for pages
 $LANG_staticpages_search = array(
     0 => '除外する',
     1 => '既定値を使用する',
     2 => '含める'
+);
+
+// Likes options for pages 
+// The same values for these options will match values for the config option "likes_pages"
+$LANG_staticpages_likes = array(
+	-1  => 'デフォルト',
+    0   => '無効', 
+    1   => 'いいねと嫌い',
+	2   => 'いいねのみ',
 );
 
 $PLG_staticpages_MESSAGE15 = 'あなたのコメントは投稿スタッフによる承認待ちとなっていて、承認が済むとサイトに表示します。';
