@@ -7950,36 +7950,52 @@ function COM_getLanguageIdForObject($id)
 }
 
 /**
- * Determine the ID to use for the current language (only when multi language is enabled)
- * The $_CONF['language_files'] array maps language IDs to language file names.
- * This function returns the language ID for a certain language file, to be
- * used in language-dependent URLs. Note: there is some code (for story id, blocks, topics) 
- * which depends on this function returning an empty string as a way to determine if multi language 
- * support is enabled
- 
+ * COM_getLanguageId
+ * URLの末尾IDから言語IDを取得（/code付きにも対応）
+ * 見つからない場合は $_CONF['language_files'] の先頭キーを返す
  *
- * @param    string $language current language file name (optional)
- * @return   string           language ID, e.g 'en'; empty string on error
+ * Geeklogコアの COM_getLanguageId をオーバーライド
+ *
+ * @param string $language 無視（互換性維持用）
+ * @return string 言語ID
  */
 function COM_getLanguageId($language = '')
 {
     global $_CONF;
 
-	$lang_id = '';
-	if (COM_isMultiLanguageEnabled()) { // this checks if $_CONF['language_files'] is set
-		if (empty($language)) {
-			$language = COM_getLanguage();
-		}
+    $lang_id = '';
 
-		$lang_id = array_search($language, $_CONF['language_files']);
+    // URLのパス部分を取得（クエリは除去）
+    $uri = $_SERVER['REQUEST_URI'];
+    $uri = parse_url($uri, PHP_URL_PATH);
 
-		if ($lang_id === false) {
-			// that looks like a misconfigured $_CONF['language_files'] array
-			COM_errorLog('Language "' . $language . '" not found in $_CONF[\'language_files\'] array!');
+    // パスの最後のセグメントを取得
+    $segments = explode('/', trim($uri, '/'));
+    $last_segment = end($segments);
 
-			$lang_id = ''; // not much we can do here ...
-		}
-	}
+    // もし最後が "code" なら、その前のセグメントを対象にする
+    if ($last_segment === 'code' && count($segments) > 1) {
+        $last_segment = prev($segments);
+    }
+
+    // "_" が含まれている場合は、その後ろを言語IDとして取得
+    $pos = MBYTE_strrpos($last_segment, '_');
+    if ($pos > 0 && ($pos + 1) < MBYTE_strlen($last_segment)) {
+        $candidate = MBYTE_substr($last_segment, $pos + 1);
+
+        // $_CONF['language_files'] に存在するか確認
+        if (isset($_CONF['language_files']) && array_key_exists($candidate, $_CONF['language_files'])) {
+            $lang_id = $candidate;
+        } else {
+            COM_errorLog('Language "' . $candidate . '" not found in $_CONF[\'language_files\'] array!');
+        }
+    }
+
+    // 言語IDが取得できなかった場合、先頭の言語IDを使用
+    if ($lang_id === '' && isset($_CONF['language_files']) && is_array($_CONF['language_files']) && !empty($_CONF['language_files'])) {
+        $keys = array_keys($_CONF['language_files']);
+        $lang_id = reset($keys); // 配列の最初のキー
+    }
 
     return $lang_id;
 }
