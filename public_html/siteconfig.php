@@ -47,7 +47,8 @@ $_CONF['site_enabled'] = true;
  * @var boolean
  * @since v2.1.2
  */
-// $_CONF['developer_mode'] = true;
+// デバッグモード
+$_CONF['developer_mode'] = true;
 
 /**
  * This overwrites error_reporting level set in lib-common.php and Geeklog Installer
