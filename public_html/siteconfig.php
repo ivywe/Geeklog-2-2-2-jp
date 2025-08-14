@@ -105,13 +105,9 @@ if (!defined('VERSION')) {
 }
 
 // ============================================================
-// Custom IP Access Control Settings (Optional)
-// These settings define which IP addresses are allowed
-// and which paths require IP-based access restrictions.
-// If not defined, default values in lib-common.php will be used.
+// Access Control and Maintenance Functionality
 // ============================================================
 
-// Example: Uncomment and edit if needed
 /*
 $allowed = [
     '203.0.113.5',
@@ -123,4 +119,28 @@ $restricted = [
     '/admin/',
     '/users.php'
 ];
+
+$maintenance_page = '/.info/';
+
+$user_ip = $_SERVER['REMOTE_ADDR'];
+
+// If the IP is allowed, full access to all pages
+if (in_array($user_ip, $allowed)) {
+    return;
+}
+
+// If the IP is not allowed
+// If accessing a restricted page, return a 403 Forbidden error
+foreach ($restricted as $path) {
+    if (strpos($_SERVER['REQUEST_URI'], $path) !== false) {
+        header('HTTP/1.1 403 Forbidden');
+        echo "Access is restricted.";
+        exit;
+    }
+}
+
+// Redirect general users to the maintenance page
+header('Location: ' . $maintenance_page);
+exit;
+
 */
