@@ -518,15 +518,13 @@ class XMLSitemap
 
         // Last modified time
         if (!empty($lastModified)) {
-            if (!empty($timezone)) {
-				$date = date('c', $lastModified); // Want date format for time zone like 2012-11-28T10:53:17+01:00
-            } else {
-				$date = date('Y-m-d', $lastModified);
-			}
-
+            // Always use 'c' format for ISO 8601 date with timezone
+            $date = date('c', $lastModified); // This will return '2025-02-27T12:41:00+09:00'
+            
+            // Append the formatted date to the XML string
             $retval .= '    <lastmod>' . $date . '</lastmod>' . self::LB;
         }
-
+        
         // Priority
         if (!empty($priority) && ($priority != self::DEFAULT_PRIORITY)) {
             $retval .= '    <priority>' . (string) $priority
