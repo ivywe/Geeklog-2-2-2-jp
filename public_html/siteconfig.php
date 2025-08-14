@@ -48,7 +48,7 @@ $_CONF['site_enabled'] = true;
  * @since v2.1.2
  */
 // デバッグモード
-$_CONF['developer_mode'] = true;
+// $_CONF['developer_mode'] = true;
 
 /**
  * This overwrites error_reporting level set in lib-common.php and Geeklog Installer
@@ -120,9 +120,15 @@ $restricted = [
     '/users.php'
 ];
 
-$maintenance_page = '/.info/';
+$maintenance_page = '/.maintenance/';
 
 $user_ip = $_SERVER['REMOTE_ADDR'];
+ 
+// If the IP is allowed, full access to all pages and enable developer mode
+if (in_array($user_ip, $allowed)) {
+ $_CONF['developer_mode'] = true; // Enable developer mode for allowed IPs
+ return;
+}
 
 // If the IP is allowed, full access to all pages
 if (in_array($user_ip, $allowed)) {
