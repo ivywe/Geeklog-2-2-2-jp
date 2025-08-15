@@ -7890,13 +7890,14 @@ function COM_getLanguageIdForObject($id)
 
 /**
  * COM_getLanguageId
- * URLの末尾IDから言語IDを取得（/code付きにも対応）
- * 見つからない場合は $_CONF['language_files'] の先頭キーを返す
  *
- * Geeklogコアの COM_getLanguageId をオーバーライド
+ * Retrieves the language ID from the last segment of the URL (supports "/code" suffix as well).
+ * If not found, returns the first key in $_CONF['language_files'].
  *
- * @param string $language 無視（互換性維持用）
- * @return string 言語ID
+ * This function overrides Geeklog core's COM_getLanguageId for custom URL handling.
+ *
+ * @param string $language Ignored (kept for compatibility)
+ * @return string Language ID
  */
 function COM_getLanguageId($language = '')
 {
@@ -7904,25 +7905,25 @@ function COM_getLanguageId($language = '')
 
     $lang_id = '';
 
-    // URLのパス部分を取得（クエリは除去）
+    // Get the path part of the URL (remove query string)
     $uri = $_SERVER['REQUEST_URI'];
     $uri = parse_url($uri, PHP_URL_PATH);
 
-    // パスの最後のセグメントを取得
+    // Get the last segment of the path
     $segments = explode('/', trim($uri, '/'));
     $last_segment = end($segments);
 
-    // もし最後が "code" なら、その前のセグメントを対象にする
+    // If the last segment is "code", use the previous segment instead
     if ($last_segment === 'code' && count($segments) > 1) {
         $last_segment = prev($segments);
     }
 
-    // "_" が含まれている場合は、その後ろを言語IDとして取得
+    // If the segment contains "_", extract the part after the last "_"
     $pos = MBYTE_strrpos($last_segment, '_');
     if ($pos > 0 && ($pos + 1) < MBYTE_strlen($last_segment)) {
         $candidate = MBYTE_substr($last_segment, $pos + 1);
 
-        // $_CONF['language_files'] に存在するか確認
+        // Check if the candidate exists in $_CONF['language_files']
         if (isset($_CONF['language_files']) && array_key_exists($candidate, $_CONF['language_files'])) {
             $lang_id = $candidate;
         } else {
@@ -7930,10 +7931,10 @@ function COM_getLanguageId($language = '')
         }
     }
 
-    // 言語IDが取得できなかった場合、先頭の言語IDを使用
+    // If no valid language ID found, use the first key in $_CONF['language_files']
     if ($lang_id === '' && isset($_CONF['language_files']) && is_array($_CONF['language_files']) && !empty($_CONF['language_files'])) {
         $keys = array_keys($_CONF['language_files']);
-        $lang_id = reset($keys); // 配列の最初のキー
+        $lang_id = reset($keys);
     }
 
     return $lang_id;
