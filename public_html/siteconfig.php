@@ -145,8 +145,10 @@ foreach ($restricted as $path) {
     }
 }
 
-// Redirect general users to the maintenance page
-header('Location: ' . $maintenance_page);
-exit;
-
+// Redirect general users to the maintenance page (only if defined and not empty)
+if (isset($maintenance_page) && $maintenance_page !== '') {
+ header('Location: ' . $maintenance_page);
+ exit;
+}
+ 
 */
