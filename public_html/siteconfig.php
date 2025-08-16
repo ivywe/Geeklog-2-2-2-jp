@@ -47,7 +47,6 @@ $_CONF['site_enabled'] = true;
  * @var boolean
  * @since v2.1.2
  */
-// デバッグモード
 // $_CONF['developer_mode'] = true;
 
 /**
