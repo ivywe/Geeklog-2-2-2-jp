@@ -123,10 +123,12 @@ $maintenance_page = '/.maintenance/';
 
 $user_ip = $_SERVER['REMOTE_ADDR'];
  
-// If the IP is allowed, full access to all pages and enable developer mode
+$_CONF['template_comments'] = false;
+$_CONF['rootdebug'] = false;
 if (in_array($user_ip, $allowed)) {
- $_CONF['developer_mode'] = true; // Enable developer mode for allowed IPs
- return;
+    $_CONF['template_comments'] = true; // Enable template_comments display mode for allowed IPs
+    $_CONF['rootdebug'] = true;
+return;
 }
 
 // If the IP is allowed, full access to all pages
