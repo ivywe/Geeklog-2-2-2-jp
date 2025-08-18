@@ -103,15 +103,24 @@ if (!defined('VERSION')) {
   define('VERSION', '2.2.2');
 }
 
-// ============================================================
-// Access Control and Maintenance Functionality
-// ============================================================
+/**
+ * Access control based on IP address
+ *
+ * - Developers (in $allowed_admin): Enable rootdebug and template_comments
+ * - Editors (in $allowed): Enable template_comments only
+ * - Other users:
+ *      - If maintenance page is set, show it and exit
+ *      - If accessing restricted paths, return 403 Forbidden
+ */
 
-/*
+// Example IPs (dummy)
 $allowed = [
-    '203.0.113.5',
-    '198.51.100.0/24',
-    '127.0.0.1'
+    '203.0.113.10',  // Editor 1
+    '203.0.113.11',  // Editor 2
+];
+
+$allowed_admin = [
+    '198.51.100.5',  // Developer
 ];
 
 $restricted = [
@@ -119,37 +128,50 @@ $restricted = [
     '/users.php'
 ];
 
+// Path to maintenance page
+// To disable maintenance mode, comment out the following line
 $maintenance_page = '/.maintenance/';
 
-$user_ip = $_SERVER['REMOTE_ADDR'];
- 
-$_CONF['template_comments'] = false;
-$_CONF['rootdebug'] = false;
-if (in_array($user_ip, $allowed)) {
-    $_CONF['template_comments'] = true; // Enable template_comments display mode for allowed IPs
-    $_CONF['rootdebug'] = true;
-return;
-}
+// Default settings (disabled)
+$_CONF['rootdebug'] = false;         // Disable developer mode
+$_CONF['template_comments'] = false; // Disable template comments
 
-// If the IP is allowed, full access to all pages
-if (in_array($user_ip, $allowed)) {
+// Get user IP
+$user_ip = $_SERVER['REMOTE_ADDR'];
+
+// Developer check (first priority)
+if (in_array($user_ip, $allowed_admin)) {
+    $_CONF['rootdebug'] = true;         // Enable developer mode
+    $_CONF['template_comments'] = true; // Enable template comments
     return;
 }
 
-// If the IP is not allowed
-// If accessing a restricted page, return a 403 Forbidden error
+// Editor check
+if (in_array($user_ip, $allowed)) {
+    $_CONF['template_comments'] = true; // Enable template comments
+    return;
+}
+
+// Maintenance mode check
+if ($maintenance_page) {
+    // Send 503 Service Unavailable and Retry-After header in any case
+    header('HTTP/1.1 503 Service Unavailable');
+    header('Retry-After: 3600'); // Suggest retry after 60 minutes
+
+    if (file_exists($maintenance_page)) {
+        include($maintenance_page); // Display maintenance page
+    } else {
+        echo "This site is currently under maintenance. Please try again later.";
+    }
+    return;
+}
+
+// Restricted paths check
 foreach ($restricted as $path) {
     if (strpos($_SERVER['REQUEST_URI'], $path) !== false) {
         header('HTTP/1.1 403 Forbidden');
-        echo "Access is restricted.";
         exit;
     }
 }
 
-// Redirect general users to the maintenance page (only if defined and not empty)
-if (isset($maintenance_page) && $maintenance_page !== '') {
- header('Location: ' . $maintenance_page);
- exit;
-}
- 
-*/
+
