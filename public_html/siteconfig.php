@@ -130,7 +130,7 @@ $restricted = [
 
 // Path to maintenance page
 // To disable maintenance mode, comment out the following line
-$maintenance_page = '/.maintenance/';
+$maintenance_page = '/.maintenance';
 
 // Default settings (disabled)
 $_CONF['rootdebug'] = false;         // Disable developer mode
@@ -154,16 +154,10 @@ if (in_array($user_ip, $allowed)) {
 
 // Maintenance mode check
 if ($maintenance_page) {
-    // Send 503 Service Unavailable and Retry-After header in any case
-    header('HTTP/1.1 503 Service Unavailable');
-    header('Retry-After: 3600'); // Suggest retry after 60 minutes
-
-    if (file_exists($maintenance_page)) {
-        include($maintenance_page); // Display maintenance page
-    } else {
-        echo "This site is currently under maintenance. Please try again later.";
-    }
-    return;
+    $host = $_SERVER['HTTP_HOST'];
+    $url = 'http://' . $host . $maintenance_page;
+    header('Location: ' . $url);
+    exit;
 }
 
 // Restricted paths check
@@ -173,5 +167,3 @@ foreach ($restricted as $path) {
         exit;
     }
 }
-
-
