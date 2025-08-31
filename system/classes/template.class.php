@@ -1020,7 +1020,8 @@ class Template
                 echo "<p><b>parse:</b> (with scalar) target = $target, varName = $varName, append = $append</p>\n";
             }
             if (isset($this->location[$varName])) {
-                $this->set_var('templatelocation', $this->location[$varName]);
+            	// Change full path to the last 40 characters
+            	$this->set_var('templatelocation', substr($this->location[$varName], -40));
             }
             $str = $this->subst($varName);
             if ($append) {
@@ -1033,7 +1034,8 @@ class Template
                 if ($this->debug & 4) {
                     echo "<p><b>parse:</b> (with array) target = $target, i = $i, varName = $v, append = $append</p>\n";
                 }
-                $this->set_var('templatelocation', $this->location[$v]);
+            	// Change full path to the last 40 characters
+            	$this->set_var('templatelocation', substr($this->location[$v], -40));
                 $str = $this->subst($v);
                 if ($append) {
                     $this->set_var($target, $this->get_var($target) . $str);
