@@ -12,11 +12,11 @@
 # http://tool.motoricerca.info/robots-checker.phtml
 
 User-agent: *
-Allow: /*.js*
-Allow: /*.css*
-Allow: /*.png*
-Allow: /*.jpg*
-Allow: /*.gif*
+Allow: /*.js$
+Allow: /*.css$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.gif$
 
 Disallow: /admin/
 Disallow: /filemanager/
@@ -30,3 +30,5 @@ Disallow: /submit.php
 Disallow: /trackback.php
 Disallow: /usersettings.php
 Disallow: /likes.php
+Disallow: /staticpages/index.php/_
+
