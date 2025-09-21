@@ -7338,9 +7338,18 @@ function COM_onFrontpage()
 			}
 		}
 		
-		if (($pos = array_search($scriptName, $homepageURLS)) !== false) {
+        // After building $homepageURLS and before return
+        if (($pos = array_search($scriptName, $homepageURLS)) !== false) {
             $onFrontPage = true;
+        } else {
+            // --- Add this block ---
+            // Allow top-level URL with query string (ex. ?gclid, ?utm_source, etc.)
+            $parsed = parse_url($scriptName);
+            if (isset($parsed['path']) && $parsed['path'] === '/' && isset($parsed['query'])) {
+                $onFrontPage = true;
+            }
         }
+
     }
 
     return $onFrontPage;
