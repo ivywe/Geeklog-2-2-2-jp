@@ -110,7 +110,7 @@ function plugin_templatesetvars_block($templatename, &$template)
         'template_name'     => 'footer',
         'template_variable' => 'blocks_footer'
     );
-    */    
+    */
 
     // Include block locations on behalf of the theme, plugins (and there supported themes)
     $block_locations = PLG_getBlockLocations();
@@ -277,7 +277,7 @@ function ADMIN_getListField_blocks($fieldName, $fieldValue, $A, $icon_arr, $toke
 
             case 'onleft':
                 switch ($A['onleft']) {
-                    case BLOCK_NONE_POSITION: 
+                    case BLOCK_NONE_POSITION:
                         if ($A['onleft'] == BLOCK_NONE_POSITION && empty($A['location'])) {
                             $retval = $LANG21[47];
                         } else {
@@ -437,14 +437,16 @@ function ADMIN_getListField_dynamicblocks($fieldName, $fieldValue, $A, $icon_arr
             } elseif ($A['topic_option'] == TOPIC_HOMEONLY_OPTION) {
                 $retval = $LANG21[43];
             } else {
-                $element_num = count($A['topic']);
+                // $A['topic'] が配列でなければ空配列にして扱う
+                $topics = is_array($A['topic']) ? $A['topic'] : [];
+                $element_num = count($topics);
 
                 if ($element_num == 0) {
                     $retval = $LANG21[47]; // None
                 } elseif ($element_num > 1) {
                     $retval = $LANG21[44]; // Multiple
                 } else {
-                    $retval = DB_getItem($_TABLES['topics'], 'topic', "tid = '{$A['topic'][0]}'");
+                    $retval = DB_getItem($_TABLES['topics'], 'topic', "tid = '{$topics[0]}'");
                 }
             }
 
