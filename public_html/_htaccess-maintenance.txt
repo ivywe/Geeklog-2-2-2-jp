@@ -1,4 +1,10 @@
 # ===========================================
+## No directory listings
+# ===========================================
+IndexIgnore *
+
+
+# ===========================================
 # Maintenance Mode Configuration with IP Whitelist
 # ===========================================
 # This setup keeps the site in maintenance mode for general users,
@@ -21,3 +27,11 @@ RewriteCond %{REQUEST_URI} !^/\.maintenance
 # --- Redirect all other visitors to the maintenance page ---
 RewriteRule ^.*$ /.maintenance/index.html [L]
 This setup works well for my use case:
+
+
+# ===========================================
+## Redirect 404 error to Geeklog error page
+# ===========================================
+ErrorDocument 404 /404.php
+
+
