@@ -109,7 +109,6 @@ if (!defined('VERSION')) {
  * - Developers (in $allowed_admin): Enable rootdebug and template_comments
  * - Editors (in $allowed): Enable template_comments only
  * - Other users:
- *      - If maintenance page is set, show it and exit
  *      - If accessing restricted paths, return 403 Forbidden
  */
 
