@@ -1,0 +1,23 @@
+# ===========================================
+# Maintenance Mode Configuration with IP Whitelist
+# ===========================================
+# This setup keeps the site in maintenance mode for general users,
+# while allowing access from specific IP addresses for development.
+# It’s useful during migrations or upgrades before Geeklog is fully installed.
+
+# Enable Rewrite Engine
+RewriteEngine On
+
+# --- Allowed IP addresses (written in regex) ---
+RewriteCond %{REMOTE_ADDR} ^147\.14\.138\.5$ [OR]
+RewriteCond %{REMOTE_ADDR} ^29\.99\.44\.10$
+
+# → Allow normal access for the above IPs
+RewriteRule ^ - [L]
+
+# --- Exclude the maintenance page itself from redirection ---
+RewriteCond %{REQUEST_URI} !^/\.maintenance
+
+# --- Redirect all other visitors to the maintenance page ---
+RewriteRule ^.*$ /.maintenance/index.html [L]
+This setup works well for my use case:

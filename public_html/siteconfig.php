@@ -128,13 +128,11 @@ $restricted = [
     '/users.php'
 ];
 
-// Path to maintenance page
-// To disable maintenance mode, comment out the following line
-$maintenance_page = '/.maintenance';
-
-// Default settings (disabled)
-$_CONF['rootdebug'] = false;         // Disable developer mode
-$_CONF['template_comments'] = false; // Disable template comments
+// Restricted path
+$restricted = [
+    '/admin/',
+    '/users.php'
+];
 
 // Get user IP
 $user_ip = $_SERVER['REMOTE_ADDR'];
@@ -142,23 +140,17 @@ $user_ip = $_SERVER['REMOTE_ADDR'];
 // Developer check (first priority)
 if (in_array($user_ip, $allowed_admin)) {
     $_CONF['rootdebug'] = true;         // Enable developer mode
-    $_CONF['template_comments'] = true; // Enable template comments
     return;
 }
 
 // Editor check
 if (in_array($user_ip, $allowed)) {
-    $_CONF['template_comments'] = true; // Enable template comments
     return;
 }
 
-// Maintenance mode check
-if ($maintenance_page) {
-    $host = $_SERVER['HTTP_HOST'];
-    $url = 'http://' . $host . $maintenance_page;
-    header('Location: ' . $url);
-    exit;
-}
+// Default settings (disabled)
+$_CONF['rootdebug'] = false;         // Disable developer mode
+$_CONF['template_comments'] = false; // Disable template comments
 
 // Restricted paths check
 foreach ($restricted as $path) {
