@@ -26,7 +26,6 @@ RewriteCond %{REQUEST_URI} !^/\.maintenance
 
 # --- Redirect all other visitors to the maintenance page ---
 RewriteRule ^.*$ /.maintenance/index.html [L]
-This setup works well for my use case:
 
 
 # ===========================================
